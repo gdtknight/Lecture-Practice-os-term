@@ -204,12 +204,12 @@ int fs_openfile(char *name)
 
 	SM_P();
 
-	/* ÇöÀç µð·ºÅä¸®¿¡¼­ nameÀ» °¡Áø ÆÄÀÏ Ã£±â */
-	/* ½ÇÆÐÇÏ¸é ¿À·ù(FS_ERROR) ¸®ÅÏ */
+	/* í˜„ìž¬ ë””ë ‰í† ë¦¬ì—ì„œ nameì„ ê°€ì§„ íŒŒì¼ ì°¾ê¸° */
+	/* ì‹¤íŒ¨í•˜ë©´ ì˜¤ë¥˜(FS_ERROR) ë¦¬í„´ */
 	
 /*	fid = allocate_open_file_table(); */
 	
-	/* ÇØ´ç ÆÄÀÏÀÇ DIRENTRY¸¦ ÀÐ¾î open_file_table[fid] ¿¡ Ã¤¿ì±â */
+	/* í•´ë‹¹ íŒŒì¼ì˜ DIRENTRYë¥¼ ì½ì–´ open_file_table[fid] ì— ì±„ìš°ê¸° */
 	/* rwoffset = 0 */
 
 	SM_V();
@@ -227,35 +227,35 @@ int fs_createfile(char *name)
 	ep = (DIRENTRY_T	*)buf;
 	first_sector = cur_dir;	
 
-	/* ÀÌ µð·ºÅä¸®ÀÇ Ã¹¹øÂ° ¿£Æ®¸® "." ÀÌ¸§À» °¡Áø ¿£Æ®¸®ÀÇ
-	   size´Â ÀÌ µð·ºÅä¸®¿¡ Á¸ÀçÇÏ´Â ÆÄÀÏÀÇ °³¼ö¸¦ °¡Áö°í ÀÖ´Ù. */
+	/* ì´ ë””ë ‰í† ë¦¬ì˜ ì²«ë²ˆì§¸ ì—”íŠ¸ë¦¬ "." ì´ë¦„ì„ ê°€ì§„ ì—”íŠ¸ë¦¬ì˜
+	   sizeëŠ” ì´ ë””ë ‰í† ë¦¬ì— ì¡´ìž¬í•˜ëŠ” íŒŒì¼ì˜ ê°œìˆ˜ë¥¼ ê°€ì§€ê³  ìžˆë‹¤. */
 	Disk_ReadSector(first_sector, buf);
-	files_in_dir = ep->size;	/* ÇöÀç ÀÌ µð·ºÅä¸®¿¡ Á¸ÀçÇÏ´Â ÆÄÀÏÀÇ °³¼ö */
+	files_in_dir = ep->size;	/* í˜„ìž¬ ì´ ë””ë ‰í† ë¦¬ì— ì¡´ìž¬í•˜ëŠ” íŒŒì¼ì˜ ê°œìˆ˜ */
 
-	/* ÇöÀç µð·ºÅä¸®¿¡¼­ nameÀ» °¡Áø ÆÄÀÏÀÌ ÀÌ¹Ì Á¸ÀçÇÏ¸é ¿À·ù(FS_ERROR) ¸®ÅÏ */	
-	/* ÇöÀç µð·ºÅä¸®¿¡¼­ °°Àº ÀÌ¸§À» °¡Áø ÆÄÀÏÀÌ ÀÖ´ÂÁö¸¦ ¸ðµÎ °Ë»çÇØ¾ß ÇÑ´Ù */
-	/* fs_dir() ÇÔ¼ö¸¦ º¸°í ÀÛ¼ºÇÒ °Í */
+	/* í˜„ìž¬ ë””ë ‰í† ë¦¬ì—ì„œ nameì„ ê°€ì§„ íŒŒì¼ì´ ì´ë¯¸ ì¡´ìž¬í•˜ë©´ ì˜¤ë¥˜(FS_ERROR) ë¦¬í„´ */	
+	/* í˜„ìž¬ ë””ë ‰í† ë¦¬ì—ì„œ ê°™ì€ ì´ë¦„ì„ ê°€ì§„ íŒŒì¼ì´ ìžˆëŠ”ì§€ë¥¼ ëª¨ë‘ ê²€ì‚¬í•´ì•¼ í•œë‹¤ */
+	/* fs_dir() í•¨ìˆ˜ë¥¼ ë³´ê³  ìž‘ì„±í•  ê²ƒ */
 
 
-	/* last_sector = ÀÌ µð·ºÅä¸®ÀÇ ¸Ç ¸¶Áö¸· ¼½ÅÍ */
+	/* last_sector = ì´ ë””ë ‰í† ë¦¬ì˜ ë§¨ ë§ˆì§€ë§‰ ì„¹í„° */
 	last_sector = first_sector;
 	while (FAT[last_sector] != (unsigned short) ~0) {
 		last_sector = FAT[last_sector];
 	}
-	/* ¸¸¾à ÀÌ µð·ºÅä¸®¿¡ ÆÄÀÏ ¿£Æ®¸®°¡ ¸ðµÎ Â÷ ÀÖÀ¸¸é */
-	/* »õ·Î¿î ¼½ÅÍ¸¦ ÇÒ´ç¹Þ¾Æ µð·ºÅä¸®¸¦ È®ÀåÇØ¾ß ÇÑ´Ù */
+	/* ë§Œì•½ ì´ ë””ë ‰í† ë¦¬ì— íŒŒì¼ ì—”íŠ¸ë¦¬ê°€ ëª¨ë‘ ì°¨ ìžˆìœ¼ë©´ */
+	/* ìƒˆë¡œìš´ ì„¹í„°ë¥¼ í• ë‹¹ë°›ì•„ ë””ë ‰í† ë¦¬ë¥¼ í™•ìž¥í•´ì•¼ í•œë‹¤ */
 	if (((ep->size * sizeof(DIRENTRY_T)) % 512) == 0) {
-		/* FAT¸¦ º¸°í »ç¿äµÇÁö ¾Ê´Â »õ·Î¿î ¼½ÅÍ¸¦ ÇÒ´ç ¹Þ´Â´Ù */
+		/* FATë¥¼ ë³´ê³  ì‚¬ìš”ë˜ì§€ ì•ŠëŠ” ìƒˆë¡œìš´ ì„¹í„°ë¥¼ í• ë‹¹ ë°›ëŠ”ë‹¤ */
 /*		new_sector = allocate_new_sector(); */
-		/* ÀÌ µð·¹Åä¸®(cur_dir) ´ÙÀ½¿¡ »õ·Î¿î ¼½ÅÍ°¡ ¿¬°áµÇµµ·Ï FAT¸¦ º¯°æ */
+		/* ì´ ë””ë ˆí† ë¦¬(cur_dir) ë‹¤ìŒì— ìƒˆë¡œìš´ ì„¹í„°ê°€ ì—°ê²°ë˜ë„ë¡ FATë¥¼ ë³€ê²½ */
 /*		FAT[last_sector] = new_sector; */
 /*		FAT[new_sector] = 0; */
 /*		last_sector = new_sector; */
 	}
 	
-	/* ÀÌ µð·ºÅä¸®ÀÇ ¸Ç ¸¶Áö¸· ¿£Æ®¸®¿¡ »õ·Î¿î ÆÄÀÏÀ» ±â·ÏÇÑ´Ù */
-	/* last_sector = ÀÌ µð·ºÅä¸®ÀÇ ¸Ç ¸¶Áö¸· ¼½ÅÍ */
-	/* offset = last_sector¿¡¼­ ¸Ç ¸¶Áö¸· ¿£Æ®¸®°¡ Á¸ÀçÇÏ´Â À§Ä¡ */
+	/* ì´ ë””ë ‰í† ë¦¬ì˜ ë§¨ ë§ˆì§€ë§‰ ì—”íŠ¸ë¦¬ì— ìƒˆë¡œìš´ íŒŒì¼ì„ ê¸°ë¡í•œë‹¤ */
+	/* last_sector = ì´ ë””ë ‰í† ë¦¬ì˜ ë§¨ ë§ˆì§€ë§‰ ì„¹í„° */
+	/* offset = last_sectorì—ì„œ ë§¨ ë§ˆì§€ë§‰ ì—”íŠ¸ë¦¬ê°€ ì¡´ìž¬í•˜ëŠ” ìœ„ì¹˜ */
 	/* 0 <= offset <= 512-sizeof(DIRENTRY_T) */
 	Disk_ReadSector(last_sector, buf);
 	ep = (DIRENTRY_T *) (buf+offset);
@@ -267,9 +267,9 @@ int fs_createfile(char *name)
 	
 	Disk_WriteSector(last_sector, buf);
 	
-	/* ÀÌ µð·ºÅä¸®ÀÇ Ã¹¹øÂ° ¿£Æ®¸® "." ÀÌ¸§À» °¡Áø ¿£Æ®¸®ÀÇ
-	   size´Â ÀÌ µð·ºÅä¸®¿¡ Á¸ÀçÇÏ´Â ÆÄÀÏÀÇ °³¼ö¸¦ °¡Áö°í ÀÖ´Ù.
-	   ÀÌ¸¦ ÇÏ³ª Áõ°¡½ÃÅ²´Ù */
+	/* ì´ ë””ë ‰í† ë¦¬ì˜ ì²«ë²ˆì§¸ ì—”íŠ¸ë¦¬ "." ì´ë¦„ì„ ê°€ì§„ ì—”íŠ¸ë¦¬ì˜
+	   sizeëŠ” ì´ ë””ë ‰í† ë¦¬ì— ì¡´ìž¬í•˜ëŠ” íŒŒì¼ì˜ ê°œìˆ˜ë¥¼ ê°€ì§€ê³  ìžˆë‹¤.
+	   ì´ë¥¼ í•˜ë‚˜ ì¦ê°€ì‹œí‚¨ë‹¤ */
 
 	ep = (DIRENTRY_T	*)buf;
 	first_sector = cur_dir;	
@@ -279,13 +279,13 @@ int fs_createfile(char *name)
 	
 	Disk_WriteSector(first_sector, buf);
 
-/* ÀÌÁ¦ µð½ºÅ©¿¡ ÆÄÀÏ »ý¼ºÀÌ ³¡³µÀ¸¸é, open_file_tableÀ» ÇÒ´çÇÏ°í µð½ºÅ©¿¡¼­
-   ¿£Æ®¸® Á¤º¸¸¦ ÀÐ¾î ÀÌ°÷À¸·Î º¹»çÇÑ´Ù. */
+/* ì´ì œ ë””ìŠ¤í¬ì— íŒŒì¼ ìƒì„±ì´ ëë‚¬ìœ¼ë©´, open_file_tableì„ í• ë‹¹í•˜ê³  ë””ìŠ¤í¬ì—ì„œ
+   ì—”íŠ¸ë¦¬ ì •ë³´ë¥¼ ì½ì–´ ì´ê³³ìœ¼ë¡œ ë³µì‚¬í•œë‹¤. */
 /*	fid = allocate_open_file_table(); */
 
 	open_file_table[fid].used = TRUE;
 
-	/* ÇØ´ç ÆÄÀÏÀÇ DIRENTRY¸¦ ÀÐ¾î open_file_table[fid] ¿¡ Ã¤¿ì±â */
+	/* í•´ë‹¹ íŒŒì¼ì˜ DIRENTRYë¥¼ ì½ì–´ open_file_table[fid] ì— ì±„ìš°ê¸° */
 	/* open_file_table[fid].rwoffset = 0 */
 
 	
@@ -304,9 +304,9 @@ int fs_readfile(int fid, char *r_buf, int size)
 		return(FS_ERROR);
 	}
 
-	/* open_file_table[fid].rwoffset À§Ä¡ºÎÅÍ size ¸¸Å­ ÆÄÀÏ µ¥ÀÌÅ¸¸¦ ÀÐ¾î¼­
-	r_buf·Î º¹»çÇÑ´Ù */
-	/* ÀÐ±â°¡ ³¡³ª¸é rwoffsetÀ» Áõ°¡½ÃÅ²´Ù */
+	/* open_file_table[fid].rwoffset ìœ„ì¹˜ë¶€í„° size ë§Œí¼ íŒŒì¼ ë°ì´íƒ€ë¥¼ ì½ì–´ì„œ
+	r_bufë¡œ ë³µì‚¬í•œë‹¤ */
+	/* ì½ê¸°ê°€ ëë‚˜ë©´ rwoffsetì„ ì¦ê°€ì‹œí‚¨ë‹¤ */
 	open_file_table[fid].rwoffset += size;
 
 	SM_V();
@@ -324,10 +324,10 @@ int fs_writefile(int fid, char *w_buf, int size)
 		return(FS_ERROR);
 	}
 
-	/* open_file_table[fid].rwoffset À§Ä¡ºÎÅÍ size ¸¸Å­ w_buf¿¡¼­ ÀÐ¾î¼­
-	±â·ÏÇÑ´Ù */
+	/* open_file_table[fid].rwoffset ìœ„ì¹˜ë¶€í„° size ë§Œí¼ w_bufì—ì„œ ì½ì–´ì„œ
+	ê¸°ë¡í•œë‹¤ */
 	
-	/* ¾²±â°¡ ³¡³ª¸é rwoffsetÀ» Áõ°¡½ÃÅ²´Ù */
+	/* ì“°ê¸°ê°€ ëë‚˜ë©´ rwoffsetì„ ì¦ê°€ì‹œí‚¨ë‹¤ */
 	open_file_table[fid].rwoffset += size;
 
 	
@@ -340,7 +340,7 @@ int fs_closefile(int fid)
 	SM_P();
 
 	if (open_file_table[fid].used != TRUE) {
-		/* ¿À·ù ¸®ÅÏ */
+		/* ì˜¤ë¥˜ ë¦¬í„´ */
 		SM_V();
 		return(FS_ERROR);
 	}
@@ -354,22 +354,22 @@ int fs_removefile(char *name)
 {
 	SM_P();
 
-	/* ÇöÀç µð·ºÅä¸®¿¡¼­ nameÀ» °¡Áö´Â ÆÄÀÏÀ» Ã£´Â´Ù */
-	/* Á¸ÀçÇÏÁö ¾ÊÀ¸¸é ¿À·ù ¸®ÅÏ */
-	/* Á¸ÀçÇÏ¸é µð·ºÅä¸® ¿£Æ®¸®¸¦ Áö¿î´Ù */	
+	/* í˜„ìž¬ ë””ë ‰í† ë¦¬ì—ì„œ nameì„ ê°€ì§€ëŠ” íŒŒì¼ì„ ì°¾ëŠ”ë‹¤ */
+	/* ì¡´ìž¬í•˜ì§€ ì•Šìœ¼ë©´ ì˜¤ë¥˜ ë¦¬í„´ */
+	/* ì¡´ìž¬í•˜ë©´ ë””ë ‰í† ë¦¬ ì—”íŠ¸ë¦¬ë¥¼ ì§€ìš´ë‹¤ */	
 
-	/* ÀÌ µð·ºÅä¸®ÀÇ Ã¹¹øÂ° ¿£Æ®¸® "." ÀÌ¸§À» °¡Áø ¿£Æ®¸®ÀÇ
-	   size´Â ÀÌ µð·ºÅä¸®¿¡ Á¸ÀçÇÏ´Â ÆÄÀÏÀÇ °³¼ö¸¦ °¡Áö°í ÀÖ´Ù.
-	   ÀÌ¸¦ ÇÏ³ª °¨¼Ò½ÃÅ²´Ù */
+	/* ì´ ë””ë ‰í† ë¦¬ì˜ ì²«ë²ˆì§¸ ì—”íŠ¸ë¦¬ "." ì´ë¦„ì„ ê°€ì§„ ì—”íŠ¸ë¦¬ì˜
+	   sizeëŠ” ì´ ë””ë ‰í† ë¦¬ì— ì¡´ìž¬í•˜ëŠ” íŒŒì¼ì˜ ê°œìˆ˜ë¥¼ ê°€ì§€ê³  ìžˆë‹¤.
+	   ì´ë¥¼ í•˜ë‚˜ ê°ì†Œì‹œí‚¨ë‹¤ */
 
-	/* ¸¸¾à ÀÌ ÆÄÀÏÀÌ µð·ºÅä¸®ÀÇ ¸Ç ¸¶Áö¸·¿¡ À§Ä¡ÇÏ°í ÀÖÀ¸¸é
-	   ¾Æ¹«°Íµµ ÇÒ ÇÊ¿ä ¾øÀÌ ¸®ÅÏ */
-	/* ¾Æ´Ï¸é ¸Ç ¸¶Áö¸· ¿£Æ®¸®¸¦ ¹æ±Ý Áö¿î ¿£Æ®¸®·Î
-	   º¹»çÇÑ´Ù. (µð·ºÅä¸® ¾ÐÃà) */
-	/* ¸Ç ¸¶Áö¸· ¿£Æ®¸®¸¦ Áö¿î´Ù */
-	/* ¸Ç ¸¶Áö¸· ¿£Æ®¸®°¡ µð·ºÅä¸®ÀÇ ¸Ç ¸¶Áö¸· ¼½ÅÍ¿¡¼­ offset 0ÀÌ¸é
-	   µð·ºÅä¸®ÀÇ ¸Ç ¸¶Áö¸· ¼½ÅÍ¸¦ ¹ÝÈ¯ÇÑ´Ù */
-	/* FAT ¸¦ ÀûÀýÈ÷ º¯°æÇÑ´Ù */
+	/* ë§Œì•½ ì´ íŒŒì¼ì´ ë””ë ‰í† ë¦¬ì˜ ë§¨ ë§ˆì§€ë§‰ì— ìœ„ì¹˜í•˜ê³  ìžˆìœ¼ë©´
+	   ì•„ë¬´ê²ƒë„ í•  í•„ìš” ì—†ì´ ë¦¬í„´ */
+	/* ì•„ë‹ˆë©´ ë§¨ ë§ˆì§€ë§‰ ì—”íŠ¸ë¦¬ë¥¼ ë°©ê¸ˆ ì§€ìš´ ì—”íŠ¸ë¦¬ë¡œ
+	   ë³µì‚¬í•œë‹¤. (ë””ë ‰í† ë¦¬ ì••ì¶•) */
+	/* ë§¨ ë§ˆì§€ë§‰ ì—”íŠ¸ë¦¬ë¥¼ ì§€ìš´ë‹¤ */
+	/* ë§¨ ë§ˆì§€ë§‰ ì—”íŠ¸ë¦¬ê°€ ë””ë ‰í† ë¦¬ì˜ ë§¨ ë§ˆì§€ë§‰ ì„¹í„°ì—ì„œ offset 0ì´ë©´
+	   ë””ë ‰í† ë¦¬ì˜ ë§¨ ë§ˆì§€ë§‰ ì„¹í„°ë¥¼ ë°˜í™˜í•œë‹¤ */
+	/* FAT ë¥¼ ì ì ˆížˆ ë³€ê²½í•œë‹¤ */
 
 	SM_V();
 	return(FS_SUCCESS);
@@ -429,4 +429,3 @@ int	fs_dir()
 	SM_V();
 	return(FS_SUCCESS);
 }
-
